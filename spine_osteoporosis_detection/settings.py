@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-yk^l@uyn77bv*!5sx=z869dhwxx#rj!nlpvz3hj(ai^862w-!y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "osteoporosis-detection-u51p.onrender.com",
+    "localhost",
+    "127.0.0.1"
+]
 
 
 # Application definition
