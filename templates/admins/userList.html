@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User List - Spine X-Ray-Based Osteoporosis Detection</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #F5F5F5;
+      color: #2E7D32;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #FBC02D, #D32F2F);
+      padding: 1.8rem 3rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      min-height: 80px;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: #FFFFFF;
+      font-size: 2rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-btn {
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .nav-btn:hover {
+      background-color: rgba(46, 125, 50, 0.2);
+    }
+
+    .active {
+      background-color: #FBC02D;
+      color: #2E7D32;
+    }
+
+    .menu-toggle {
+      display: none;
+      color: #FFFFFF;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        background: #FFFFFF;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+    }
+
+    .main-content {
+      margin-top: 120px;
+      padding: 60px 20px;
+      text-align: center;
+      background-color: #FFFFFF;
+      border-radius: 12px;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #FBC02D;
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 1.8rem;
+      color: #D32F2F;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 1.15rem;
+      color: #2E7D32;
+    }
+
+    table {
+      width: 100%;
+      max-width: 1200px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: #FFFFFF;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #2E7D32;
+      border-bottom: 1px solid #D32F2F;
+    }
+
+    th {
+      background: #FBC02D;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    tr:hover td {
+      background: rgba(46, 125, 50, 0.05);
+    }
+
+    td a {
+      color: #2E7D32;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    td a:hover {
+      color: #D32F2F;
+    }
+
+    .no-users {
+      text-align: center;
+      padding: 20px;
+      font-size: 1.1rem;
+      color: #D32F2F;
+    }
+
+    footer {
+      background-color: #D32F2F;
+      color: #FFFFFF;
+      padding: 30px 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{% url 'adminHome' %}" class="nav-logo">Spine X-Ray-Based Osteoporosis Detection</a>
+      <div class="menu-toggle" id="mobileMenu">☰</div>
+
+      <div class="nav-menu" id="navMenu">
+        <a href="{% url 'adminHome' %}" class="nav-btn">Home</a>
+        <a href="{% url 'RegisterUsersView' %}" class="nav-btn active">User List</a>
+        <a href="{% url 'AdminLogin' %}" class="nav-btn">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>User List</h1>
+    <p>Manage registered users for the Spine X-Ray-Based Osteoporosis Detection system.</p>
+
+    <section>
+      <h2>Registered Users</h2>
+
+      {% if data %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Login ID</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Locality</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for user in data %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.loginid }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.mobile }}</td>
+            <td>{{ user.locality }}</td>
+            <td>{{ user.address }}</td>
+            <td>{{ user.city }}</td>
+            <td>{{ user.state }}</td>
+            <td>{{ user.status|capfirst }}</td>
+            <td>
+              {% if user.status == 'waiting' %}
+              <a href="{% url 'ActivaUsers' %}?uid={{ user.id }}">Activate</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+      <p class="no-users">No users registered yet.</p>
+      {% endif %}
+    </section>
+  </div>
+
+  <footer>
+    © 2025 Spine X-Ray-Based Osteoporosis Detection Using Deep Learning Techniques
+  </footer>
+
+  <script>
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navMenu = document.getElementById('navMenu');
+
+    mobileMenu.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+  </script>
+
+</body>
+</html>

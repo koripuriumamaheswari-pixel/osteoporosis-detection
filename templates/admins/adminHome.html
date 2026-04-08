@@ -1,0 +1,246 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Home - Spine X-Ray-Based Osteoporosis Detection</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #F5F5F5;
+      color: #2E7D32;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #FBC02D, #D32F2F);
+      padding: 1.8rem 3rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s ease;
+      min-height: 80px;
+    }
+
+    .navbar.scrolled {
+      background: linear-gradient(135deg, #2E7D32, #FBC02D);
+      transform: scale(1.01);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: #FFFFFF;
+      font-size: 2rem;
+      font-weight: bold;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      animation: tokenGlow 2s infinite alternate;
+    }
+
+    @keyframes tokenGlow {
+      0% { text-shadow: 0 0 5px #2E7D32; }
+      100% { text-shadow: 0 0 15px #D32F2F; }
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-btn {
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(211, 47, 47, 0.2);
+      top: 0;
+      left: -100%;
+      transition: all 0.4s ease;
+    }
+
+    .nav-btn:hover::after { left: 0; }
+
+    .nav-btn:hover {
+      background-color: rgba(46, 125, 50, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .active {
+      background-color: #FBC02D;
+      color: #2E7D32;
+    }
+
+    .menu-toggle {
+      display: none;
+      color: #FFFFFF;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        background: #FFFFFF;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        border-top: 1px solid #D32F2F;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+    }
+
+    .main-content {
+      margin-top: 120px;
+      padding: 60px 20px;
+      text-align: center;
+      background-color: #FFFFFF;
+      border-radius: 12px;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #FBC02D;
+      font-family: 'Orbitron', sans-serif;
+      animation: tokenGlow 3s infinite alternate;
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 1.8rem;
+      color: #D32F2F;
+    }
+
+    p, li {
+      margin-top: 10px;
+      font-size: 1.15rem;
+      color: #2E7D32;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li::before {
+      content: "🩺";
+      margin-right: 8px;
+    }
+
+    footer {
+      background-color: #D32F2F;
+      color: #FFFFFF;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .footer-bottom {
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="{% url 'adminHome' %}" class="nav-logo">Spine X-Ray-Based Osteoporosis Detection</a>
+
+      <div class="menu-toggle" id="mobileMenu">☰</div>
+
+      <div class="nav-menu" id="navMenu">
+        <a href="{% url 'adminHome' %}" class="nav-btn active"><i class="fas fa-home"></i> Home</a>
+        <a href="{% url 'RegisterUsersView' %}" class="nav-btn"><i class="fas fa-users"></i> User List</a>
+        <a href="{% url 'AdminLogin' %}" class="nav-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>Admin Home</h1>
+    <p>Welcome to the Admin Dashboard for Spine X-Ray-Based Osteoporosis Detection Using Deep Learning Techniques.</p>
+
+    <section>
+      <h2><i class="fas fa-user-shield"></i> Admin Overview</h2>
+      <p>Manage users, oversee X-ray data, fine-tune deep learning models, and review osteoporosis detection results efficiently.</p>
+    </section>
+
+    <section>
+      <h2><i class="fas fa-cogs"></i> Admin Functions</h2>
+      <ul style="text-align: left; max-width: 1000px; margin: 20px auto;">
+        <li><strong>User Management:</strong> View, edit, and approve user accounts.</li>
+        <li><strong>X-Ray Data Management:</strong> Upload and organize spine X-ray images.</li>
+        <li><strong>Model Training:</strong> Fine-tune CNN models for osteoporosis detection.</li>
+        <li><strong>Detection Review:</strong> Monitor and validate detection outputs.</li>
+        <li><strong>System Logs:</strong> Access activity and error logs for auditing.</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer>
+    <div class="footer-bottom">
+      © 2025 Spine X-Ray-Based Osteoporosis Detection Using Deep Learning Techniques | By Data_Point (pvt) Ltd
+    </div>
+  </footer>
+
+  <script>
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navMenu = document.getElementById('navMenu');
+    const navbar = document.getElementById('navbar');
+
+    mobileMenu.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,463 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard - Spine detection</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    /* Inherit base styles and add user-specific styles */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #0a0a23, #1e3a8a);
+      color: #e5e7eb;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #3b82f6, #10b981);
+      padding: 1.5rem 3rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      transition: background 0.4s ease, transform 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: linear-gradient(135deg, #2563eb, #059669);
+      transform: translateY(0) scale(1.02);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: #ffffff;
+      font-size: 2rem;
+      font-weight: bold;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      animation: neonGlow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes neonGlow {
+      0% { text-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; }
+      100% { text-shadow: 0 0 10px #3b82f6, 0 0 20px #10b981; }
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-btn {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      top: 0;
+      left: -100%;
+      transition: left 0.4s ease;
+    }
+
+    .nav-btn:hover::after {
+      left: 0;
+    }
+
+    .nav-btn:hover {
+      background: rgba(59, 130, 246, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .active {
+      background: #3b82f6;
+      color: #ffffff;
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+      70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+
+    .menu-toggle {
+      display: none;
+      color: #ffffff;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        background: #1e3a8a;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        border-top: 1px solid #4b5e8a;
+      }
+
+      .nav-menu.active {
+        display: flex;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+    }
+
+    .main-content {
+      margin-top: 100px;
+      padding: 60px 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      animation: float 6s ease-in-out infinite;
+      transform: perspective(1000px);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) perspective(1000px) rotateX(2deg); }
+      50% { transform: translateY(-20px) perspective(1000px) rotateX(-2deg); }
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #3b82f6;
+      font-family: 'Orbitron', sans-serif;
+      animation: textNeon 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes textNeon {
+      0% { text-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; }
+      100% { text-shadow: 0 0 15px #10b981, 0 0 25px #10b981; }
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 1.8rem;
+      color: #e5e7eb;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 4px;
+      background: #3b82f6;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: expandLine 2s infinite;
+    }
+
+    @keyframes expandLine {
+      0% { width: 60px; }
+      50% { width: 120px; }
+      100% { width: 60px; }
+    }
+
+    p, li {
+      margin-top: 12px;
+      font-size: 1.2rem;
+      color: #d1d5db;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li::before {
+      content: "➤";
+      color: #10b981;
+      margin-right: 10px;
+      animation: arrowPulse 1.5s infinite;
+    }
+
+    @keyframes arrowPulse {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+
+    footer {
+      background: rgba(30, 58, 138, 0.8);
+      color: #e5e7eb;
+      padding: 30px 20px;
+      text-align: center;
+      animation: fadeInFooter 1s ease-in;
+    }
+
+    @keyframes fadeInFooter {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .footer-bottom {
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .depth-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) perspective(1000px);
+      width: 400px;
+      height: 400px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.15;
+    }
+
+    .depth-node {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: depthPulse 3s infinite ease-in-out;
+      transform: translateZ(0);
+    }
+
+    @keyframes depthPulse {
+      0% { transform: scale(1) translateZ(0); opacity: 0.7; }
+      50% { transform: scale(1.8) translateZ(50px); opacity: 0.3; }
+      100% { transform: scale(1) translateZ(0); opacity: 0.7; }
+    }
+
+    /* User-Specific Styles */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .depth-map {
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      animation: floatCard 5s ease-in-out infinite;
+    }
+
+    .navigation-info {
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      animation: floatCard 5s ease-in-out infinite 0.5s;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0) rotateX(1deg); }
+      50% { transform: translateY(-15px) rotateX(-1deg); }
+    }
+
+    .depth-map img {
+      width: 100%;
+      border-radius: 8px;
+      filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+    }
+  </style>
+</head>
+<body>
+
+<div id="particles-js"></div>
+<div class="depth-overlay" id="depthOverlay"></div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo">Spine detection</a>
+    <div class="menu-toggle" id="mobileMenu">☰</div>
+    <div class="nav-menu" id="navMenu">
+      <a href="/" class="nav-btn">Home</a>
+      <a href="detector_LoginForm" class="nav-btn">Detector</a>
+      <a href="admin_LoginForm" class="nav-btn">Admin</a>
+      <a href="detector_registerForm" class="nav-btn">Registration</a>
+    </div>
+  </div>
+</nav>
+{% block contents %}
+{% endblock %}
+
+<div class="main-content">
+  <h1>User Dashboard</h1>
+  <p>Monitor real-time depth estimation and navigation decisions for autonomous driving.</p>
+
+  <section class="dashboard">
+    <div class="depth-map">
+      <h2>Depth Map Visualization</h2>
+      <p>View the latest depth estimation output from the monocular camera.</p>
+      <img src="{% static 'images/depth_map_placeholder.jpg' %}" alt="Depth Map">
+    </div>
+    <div class="navigation-info">
+      <h2>Navigation Decisions</h2>
+      <ul style="text-align: left;">
+        <li><strong>Current Speed:</strong> 50 km/h</li>
+        <li><strong>Steering Angle:</strong> 5° left</li>
+        <li><strong>Obstacle Distance:</strong> 10 meters</li>
+        <li><strong>Decision:</strong> Maintain course</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    © 2025 Autonomous Driving Model | By Data_Point (pvt) Ltd
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navMenu = document.getElementById('navMenu');
+    const navbar = document.getElementById('navbar');
+    const navLinks = document.querySelectorAll('.nav-btn');
+    const currentPath = window.location.pathname;
+    const depthOverlay = document.getElementById('depthOverlay');
+
+    // Mobile Menu Toggle
+    mobileMenu.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+
+    // Active Link Highlight
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active');
+      }
+    });
+
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Particles.js Configuration
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 60 },
+        color: { value: "#3b82f6" },
+        shape: { type: "circle" },
+        opacity: { value: 0.6, random: true },
+        size: { value: 8, random: true },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#10b981",
+          opacity: 0.5,
+          width: 1.5
+        },
+        move: {
+          enable: true,
+          speed: 3,
+          direction: "none",
+          out_mode: "bounce"
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          grab: { distance: 250, line_linked: { opacity: 0.6 } },
+          push: { particles_nb: 3 }
+        }
+      },
+      retina_detect: true
+    });
+
+    // Dynamic 3D Depth Overlay Animation
+    function createDepthNodes() {
+      const nodeCount = 6;
+      for (let i = 0; i < nodeCount; i++) {
+        const node = document.createElement('div');
+        node.classList.add('depth-node');
+        const angle = (i / nodeCount) * 2 * Math.PI;
+        const radius = 120 + Math.random() * 80;
+        node.style.left = `${200 + Math.cos(angle) * radius}px`;
+        node.style.top = `${200 + Math.sin(angle) * radius}px`;
+        node.style.animationDelay = `${i * 0.4}s`;
+        depthOverlay.appendChild(node);
+      }
+    }
+
+    createDepthNodes();
+
+    // Simulate Depth Estimation Pulse
+    setInterval(() => {
+      const randomNode = document.querySelector('.depth-node:nth-child(' + Math.floor(Math.random() * 6 + 1) + ')');
+      if (randomNode) {
+        randomNode.style.background = '#ff6b6b';
+        setTimeout(() => {
+          randomNode.style.background = '#10b981';
+        }, 1200);
+      }
+    }, 4000);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Spine X-Ray Based Osteoporosis Detection</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #34495e;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #2c3e50;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spine X-Ray Based Osteoporosis Detection Using Deep Learning Techniques</h1>
+  </header>
+
+  <nav>
+    <a href="{% url 'admin_home' %}">Home</a>
+    <a href="{% url 'admin_view_users' %}">Users</a>
+    <a href="{% url 'admin_datasets' %}">Datasets</a>
+    <a href="{% url 'admin_training' %}">Train Model</a>
+    <a href="{% url 'admin_view_predictions' %}">Predictions</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  </nav>
+
+  <div class="container">
+    <section>
+      <h2>📊 Overview</h2>
+      <p>This admin dashboard allows monitoring and managing all aspects of the osteoporosis detection system using spine X-ray images. The system leverages deep learning to detect osteoporosis effectively from radiographic data.</p>
+    </section>
+
+    <section>
+      <h2>🛠 Features</h2>
+      <ul>
+        <li>Admin approval for user registration and access control.</li>
+        <li>Dataset upload and review for spine X-ray images.</li>
+        <li>Model training management using convolutional neural networks (CNN).</li>
+        <li>Prediction and analysis of osteoporosis from X-ray input.</li>
+        <li>Real-time user and system monitoring with explainable AI outputs.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>👨‍⚕️ Purpose</h2>
+      <p>The goal of this system is to provide a robust, automated solution to assist radiologists and clinicians in detecting osteoporosis, reducing manual effort and increasing diagnostic accuracy.</p>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 Spine X-Ray Based Osteoporosis Detection | Powered by Deep Learning
+  </footer>
+</body>
+</html>

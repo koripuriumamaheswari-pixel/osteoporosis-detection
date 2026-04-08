@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration - spine detection</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #0a0a23, #1e3a8a);
+      color: #e5e7eb;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #3b82f6, #10b981);
+      padding: 1.5rem 3rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      transition: background 0.4s ease, transform 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: linear-gradient(135deg, #2563eb, #059669);
+      transform: translateY(0) scale(1.02);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: #ffffff;
+      font-size: 2rem;
+      font-weight: bold;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      animation: neonGlow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes neonGlow {
+      0% { text-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; }
+      100% { text-shadow: 0 0 10px #3b82f6, 0 0 20px #10b981; }
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-btn {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      top: 0;
+      left: -100%;
+      transition: left 0.4s ease;
+    }
+
+    .nav-btn:hover::after {
+      left: 0;
+    }
+
+    .nav-btn:hover {
+      background: rgba(59, 130, 246, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .active {
+      background: #3b82f6;
+      color: #ffffff;
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+      70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+
+    .menu-toggle {
+      display: none;
+      color: #ffffff;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        background: #1e3a8a;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        border-top: 1px solid #4b5e8a;
+      }
+
+      .nav-menu.active {
+        display: flex;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+    }
+
+    .main-content {
+      margin-top: 120px;
+      padding: 40px 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) perspective(1000px) rotateX(2deg); }
+      50% { transform: translateY(-20px) perspective(1000px) rotateX(-2deg); }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #3b82f6;
+      font-family: 'Orbitron', sans-serif;
+      animation: textNeon 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes textNeon {
+      0% { text-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; }
+      100% { text-shadow: 0 0 15px #10b981, 0 0 25px #10b981; }
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #d1d5db;
+      margin-bottom: 20px;
+    }
+
+    .registration-form {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      animation: floatCard 5s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0) rotateX(1deg); }
+      50% { transform: translateY(-15px) rotateX(-1deg); }
+    }
+
+    .registration-form .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .registration-form label {
+      display: block;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .registration-form input[type="text"],
+    .registration-form input[type="email"],
+    .registration-form input[type="password"],
+    .registration-form textarea,
+    .registration-form select {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #e5e7eb;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    .registration-form input::placeholder,
+    .registration-form textarea::placeholder {
+      color: #9ca3af;
+    }
+
+    .registration-form input:focus,
+    .registration-form textarea:focus,
+    .registration-form select:focus {
+      background: rgba(255, 255, 255, 0.15);
+      outline: none;
+    }
+
+    .registration-form select {
+      appearance: none;
+      background: rgba(255, 255, 255, 0.1) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%239ca3af" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+      background-size: 12px;
+    }
+
+    .registration-form button {
+      width: 100%;
+      padding: 12px;
+      background: #3b82f6;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .registration-form button:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    .registration-form p[style*="color: red"] {
+      font-size: 0.9rem;
+      color: #ff6b6b;
+      margin-top: 5px;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .depth-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) perspective(1000px);
+      width: 400px;
+      height: 400px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.15;
+    }
+
+    .depth-node {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: depthPulse 3s infinite ease-in-out;
+      transform: translateZ(0);
+    }
+
+    @keyframes depthPulse {
+      0% { transform: scale(1) translateZ(0); opacity: 0.7; }
+      50% { transform: scale(1.8) translateZ(50px); opacity: 0.3; }
+      100% { transform: scale(1) translateZ(0); opacity: 0.7; }
+    }
+
+    footer {
+      background: rgba(30, 58, 138, 0.8);
+      color: #e5e7eb;
+      padding: 30px 20px;
+      text-align: center;
+      animation: fadeInFooter 1s ease-in;
+    }
+
+    @keyframes fadeInFooter {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .footer-bottom {
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="depth-overlay" id="depthOverlay"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">Spine osteoporosis detection</a>
+      <div class="menu-toggle" id="mobileMenu">☰</div>
+      <div class="nav-menu" id="navMenu">
+        <a href="/" class="nav-btn">Home</a>
+        <a href="{% url 'UserLogin' %}" class="nav-btn">User</a>
+        <a href="{% url 'AdminLogin' %}" class="nav-btn">Admin</a>
+        <a href="{% url 'UserRegister' %}" class="nav-btn active">Registration</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>User Registration</h1>
+    <p>Create an account to access spine detection</p>
+
+    <section class="registration-form">
+      <form method="POST" action="{% url 'UserRegisterActions' %}" class="w-100">
+                        {% csrf_token %}
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label>Full Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter your name"
+                                    required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Login ID (Username)</label>
+                                <input type="text" name="loginid" class="form-control"
+                                    placeholder="Choose a unique username" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Password</label>
+                                <input type="password" name="password" class="form-control"
+                                    placeholder="Min 8 chars, 1 capital, 1 number, 1 symbol" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Mobile Number</label>
+                                <input type="text" name="mobile" class="form-control"
+                                    placeholder="10-digit Indian mobile number" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Email</label>
+                                <input type="email" name="email" class="form-control" placeholder="example@gmail.com"
+                                    required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Locality</label>
+                                <input type="text" name="locality" class="form-control" placeholder="Your area/locality"
+                                    required>
+                            </div>
+
+                            <div class="col-12">
+                                <label>Address</label>
+                                <textarea name="address" class="form-control" rows="3" placeholder="Full address"
+                                    required></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>City</label>
+                                <input type="text" name="city" class="form-control" placeholder="City name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>State</label>
+                                <input type="text" name="state" class="form-control" placeholder="State name" required>
+                            </div>
+
+                            <div class="col-12 text-center mt-3">
+                                <button type="submit" class="btn btn-primary w-50">Register</button>
+                            </div>
+
+                            {% if messages %}
+                            <div class="col-12 mt-3 text-danger text-center">
+                                {% for message in messages %}
+                                <p>{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </form>
+    </section>
+  </div>
+
+  <footer>
+    <div class="footer-bottom">
+      © 2025 Spine detection | By Data_Point (pvt) Ltd
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const mobileMenu = document.getElementById('mobileMenu');
+      const navMenu = document.getElementById('navMenu');
+      const navbar = document.getElementById('navbar');
+      const navLinks = document.querySelectorAll('.nav-btn');
+      const currentPath = window.location.pathname;
+      const depthOverlay = document.getElementById('depthOverlay');
+
+      mobileMenu.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+      });
+
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+        }
+      });
+
+      window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 10);
+      });
+
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 60 },
+          color: { value: '#3b82f6' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.6, random: true },
+          size: { value: 8, random: true },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: '#10b981',
+            opacity: 0.5,
+            width: 1.5
+          },
+          move: {
+            enable: true,
+            speed: 3,
+            direction: 'none',
+            out_mode: 'bounce'
+          }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: {
+            onhover: { enable: true, mode: 'grab' },
+            onclick: { enable: true, mode: 'push' }
+          },
+          modes: {
+            grab: { distance: 250, line_linked: { opacity: 0.6 } },
+            push: { particles_nb: 3 }
+          }
+        },
+        retina_detect: true
+      });
+
+      function createDepthNodes() {
+        const nodeCount = 6;
+        for (let i = 0; i < nodeCount; i++) {
+          const node = document.createElement('div');
+          node.classList.add('depth-node');
+          const angle = (i / nodeCount) * 2 * Math.PI;
+          const radius = 120 + Math.random() * 80;
+          node.style.left = `${200 + Math.cos(angle) * radius}px`;
+          node.style.top = `${200 + Math.sin(angle) * radius}px`;
+          node.style.animationDelay = `${i * 0.4}s`;
+          depthOverlay.appendChild(node);
+        }
+      }
+
+      createDepthNodes();
+
+      setInterval(() => {
+        const randomNode = document.querySelector(`.depth-node:nth-child(${Math.floor(Math.random() * 6 + 1)})`);
+        if (randomNode) {
+          randomNode.style.background = '#ff6b6b';
+          setTimeout(() => {
+            randomNode.style.background = '#10b981';
+          }, 1200);
+        }
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

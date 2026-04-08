@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block contents %}
+<style>
+    .hero-section {
+        min-height: 100vh;
+        background-image: url('https://t3.ftcdn.net/jpg/07/83/00/18/360_F_783001837_QwFERByuHmTBBukzfrDKzqMSJnJubmUr.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(10, 10, 10, 0.6);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        animation: fadeInUp 1.5s ease;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            transform: translateY(40px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        color: #f0f0f0;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: #ccc;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content container">
+        <h1 class="hero-title">Spine detection</h1>
+        <a href="{% url 'UserLogin' %}" class="btn btn-primary btn-lg mt-4">Get Started</a>
+    </div>
+</section>
+{% endblock %}
