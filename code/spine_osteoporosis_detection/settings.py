@@ -1,3 +1,4 @@
+# updated
 """
 Django settings for spine_osteoporosis_detection.
 

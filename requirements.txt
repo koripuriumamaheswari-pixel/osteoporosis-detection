@@ -7,3 +7,4 @@ scikit-learn
 tensorflow==2.15.0
 Pillow
 matplotlib==3.7.1
+seaborn==0.13.2
