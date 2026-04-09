@@ -247,7 +247,8 @@ def predict_image(request):
             img_array = np.expand_dims(img_array, axis=0)  # shape: (1, 128, 128, 3)
 
             # Load model
-            model = load_model('best_model.h5')
+            model_path = os.path.join(settings.BASE_DIR, 'best_model.h5')
+            model = load_model(model_path)
 
             # Predict
             predictions = model.predict(img_array)
