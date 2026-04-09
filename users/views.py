@@ -99,25 +99,23 @@ def UserHome(request):
 
 
 
-import os
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from django.shortcuts import render
-from django.http import JsonResponse
-from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import RandomOverSampler
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-import warnings
-
-warnings.filterwarnings("ignore")
-
 def training(request):
+    import os
+    import pandas as pd
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from django.http import JsonResponse
+    from sklearn.model_selection import train_test_split
+    from imblearn.over_sampling import RandomOverSampler
+    from tensorflow.keras.preprocessing.image import ImageDataGenerator
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+    import warnings
+    warnings.filterwarnings("ignore")
+
     try:
         BASE_PATH = 'media\ImagesOriginalSize'
         FOLDERS = {'NormalFinal': 1, 'ScolFinal': 2, 'SpondFinal': 3}
@@ -215,23 +213,19 @@ def training(request):
         return render(request,'users/training.html')
 
 
-import os
-import numpy as np
-from PIL import Image
-from django.shortcuts import render
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array
-from django.core.files.storage import default_storage
-from django.conf import settings
-
-# Define the class labels (ensure same order as during training)
-# CLASS_LABELS = {0: 'NormalFinal', 1: 'ScolFinal', 2: 'SpondFinal'}
-CLASS_LABELS = {0: 'Normal', 1: 'Osteoporosis', 2: 'Other'}
 
 @csrf_exempt
 def predict_image(request):
+    import os
+    import numpy as np
+    from PIL import Image
+    from tensorflow.keras.models import load_model
+    from tensorflow.keras.preprocessing.image import img_to_array
+    from django.core.files.storage import default_storage
+    
+    CLASS_LABELS = {0: 'Normal', 1: 'Osteoporosis', 2: 'Other'}
+
     try:
         if request.method == 'POST' and request.FILES.get('image'):
             image_file = request.FILES['image']
