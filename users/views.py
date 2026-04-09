@@ -247,9 +247,13 @@ def predict_image(request):
             img_array = np.expand_dims(img_array, axis=0)  # shape: (1, 128, 128, 3)
 
             # Load TFLite model
-            import tensorflow as tf
             model_path = os.path.join(settings.BASE_DIR, 'best_model.tflite')
-            interpreter = tf.lite.Interpreter(model_path=model_path)
+            try:
+                import tflite_runtime.interpreter as tflite
+                interpreter = tflite.Interpreter(model_path=model_path)
+            except ImportError:
+                import tensorflow as tf
+                interpreter = tf.lite.Interpreter(model_path=model_path)
             interpreter.allocate_tensors()
 
             # Predict
