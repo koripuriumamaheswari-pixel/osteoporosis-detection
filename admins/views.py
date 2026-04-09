@@ -52,4 +52,4 @@ def UserLogin(request):
 
 def UserRegister(request):
     form = UserRegistrationForm()
-    return render(request, 'userRegistrations.html', {'form': form})
+    return render(request, 'UserRegistrations.html', {'form': form})
