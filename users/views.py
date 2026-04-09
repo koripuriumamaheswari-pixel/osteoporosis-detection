@@ -95,7 +95,7 @@ def UserLoginCheck(request):
     return render(request, 'userLogin.html', {})
 
 def UserHome(request):
-    return render(request, 'users/UserHome.html')
+    return render(request, 'users/userHome.html')
 
 
 
